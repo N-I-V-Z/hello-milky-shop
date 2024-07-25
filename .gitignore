@@ -5,6 +5,7 @@
 /package-lock.json
 /package.json
 /BackEnd/.env
+/BackEnd/test.http
 /.vscode
 /BackEnd/build
 /FrontEnd/build

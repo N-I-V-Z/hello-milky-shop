@@ -1,5 +1,4 @@
 const shippingAddressDAO = require("../dao/shippingAddressDAO");
-const { updateShippingAddress } = require("../service/shippingAddressService");
 
 const shippingAddressRepository = {
   getInfoShippingByUserID: async (ID) => {

@@ -1,5 +1,4 @@
 
-const { updateShippingAddress } = require("../controller/shippingAddressController");
 const shippingAddressRepository = require("../repository/shippingAddressRepository");
 
 const shippingAddressService = {

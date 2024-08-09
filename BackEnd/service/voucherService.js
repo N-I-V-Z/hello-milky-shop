@@ -1,4 +1,3 @@
-const { openVoucher } = require("../controller/voucherController");
 const voucherRepository = require("../repository/voucherRepository");
 
 const voucherService = {

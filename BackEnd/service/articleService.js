@@ -11,17 +11,11 @@ const articleService = {
   getArticlesByArticleID: async (ID) => {
     return await articleRepository.getArticlesByArticleID(ID);
   },
-  getArticlesByContent: async (Content) => {
-    return await articleRepository.getArticlesByContent(Content);
-  },
   getAllArticles: async () => {
     return await articleRepository.getAllArticles();
   },
   getAllArticlesforViewer: async () => {
     return await articleRepository.getAllArticlesforViewer();
-  },
-  getAllArticleCategory: async () => {
-    return await articleRepository.getAllArticleCategory();
   },
 
   createArticle: async (article) => {
@@ -34,9 +28,6 @@ const articleService = {
 
   updateArticle: async (article_id, article) => {
     return await articleRepository.updateArticle(article_id, article);
-  },
-  getAuthorName: async () => {
-    return await articleRepository.getAuthorName();
   },
   getCurrentCategoriesInArticles: async () => {
     return await articleRepository.getCurrentCategoriesInArticles();

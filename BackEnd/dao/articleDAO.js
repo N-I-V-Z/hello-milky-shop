@@ -26,26 +26,6 @@ const articleDAO = {
       });
     });
   },
-  findArticlesByID: (ID) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request().input("ID", ID);
-        request.query(
-          `SELECT *
-          FROM Article
-          WHERE AuthorID = @ID
-           
-          `,
-          (err, res) => {
-            if (err) reject(err);
-
-            resolve(res.recordset);
-          }
-        );
-      });
-    });
-  },
-
   findArticlesByArticleID: (ID) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function () {
@@ -54,26 +34,6 @@ const articleDAO = {
           `SELECT *
           FROM Article
           WHERE ArticleID = @ID
-           
-          `,
-          (err, res) => {
-            if (err) reject(err);
-
-            resolve(res.recordset);
-          }
-        );
-      });
-    });
-  },
-
-  findArticlesByContent: (Content) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request().input("Content", Content);
-        request.query(
-          `SELECT *
-          FROM Article
-          WHERE Content = @Content
            
           `,
           (err, res) => {
@@ -112,23 +72,6 @@ const articleDAO = {
           FROM Article
           WHERE PublishDate <= GETDATE();
           `,
-          (err, res) => {
-            if (err) reject(err);
-
-            resolve(res.recordset);
-          }
-        );
-      });
-    });
-  },
-  findAllArticleCategory: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT ArticleCategoryName 
-          FROM ArticleCategory 
-          ;`,
           (err, res) => {
             if (err) reject(err);
 

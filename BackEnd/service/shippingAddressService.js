@@ -10,11 +10,6 @@ const shippingAddressService = {
   getInfoShippingByOrderID: async (orderID) => {
     return await shippingAddressRepository.getInfoShippingByOrderID(orderID);
   },
-
-  getShippingAddressIsDeleted: async () => {
-    return await shippingAddressRepository.getShippingAddressIsDeleted();
-  },
-
   updateDeleted: async (shippingAddress_id) => {
     return await shippingAddressRepository.updateDeleted(shippingAddress_id);
   },

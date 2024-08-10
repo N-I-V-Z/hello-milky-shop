@@ -2,8 +2,6 @@ const router = require('express').Router();
 
 const commentController = require("../controller/commentController");
      
-router.get('/getAllComments', commentController.getAllComments);
-
 router.get('/getAnsweredComments', commentController.getAnsweredComments);
 
 router.get('/getUnansweredComments', commentController.getUnansweredComments);
@@ -17,7 +15,5 @@ router.post('/userComment', commentController.userComment);
 router.get('/getCommentByProductID/:id', commentController.getCommentByProductID);
 
 router.get('/countRatingAndAvgRating/:id', commentController.countRatingAndAvgRating);
-
-router.post('/getCommentByID', commentController.getCommentByID);
 
 module.exports = router

@@ -32,13 +32,6 @@ const updatePromotion = async (req, res) => {
     }
 }
 
-const searchPromotionByName = async (req, res) => {
-    promotionService.searchPromotionByName(req.query.name)
-        .then(result => res.status(200).json(result))
-        .catch(err => res.status(500).json({ message: err.message }));
-}
-
-
 const getProductsApplyAnPromotion = async (req, res) => {
     try {
         const promotionID = req.params.promotionID;
@@ -85,7 +78,6 @@ module.exports = {
     getAllPromotions,
     addPromotion,
     updatePromotion,
-    searchPromotionByName,
     getPromotionByDate,
     getProductsApplyAnPromotion,
     applyPromotionToProduct,

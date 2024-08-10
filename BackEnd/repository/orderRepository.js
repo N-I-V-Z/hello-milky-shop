@@ -34,12 +34,6 @@ const orderRepository = {
     countOrdersPayed: () => {
         return orderDAO.countOrdersPayed();
     },
-    getAllOrders: () => {
-        return orderDAO.getAllOrders();
-    },
-    searchOrderByUserName: (userName) => {
-        return orderDAO.searchOrderByUserName(userName);
-    },
     createOrder: (userID) => {
         return orderDAO.createOrder(userID);
     },
@@ -55,14 +49,8 @@ const orderRepository = {
     checkoutOrder: (orderID) => {
         return orderDAO.checkoutOrder(orderID);
     },
-    getApplicableVouchers: (userID, orderTotal, currentDate) => {
-        return orderDAO.getApplicableVouchers(userID, orderTotal, currentDate);
-    },
     applyVoucherToOrder: (orderID, voucherID) => {
         return orderDAO.applyVoucherToOrder(orderID, voucherID);
-    },
-    getPreviousOrderAddress: (userID) => {
-        return orderDAO.getPreviousOrderAddress(userID);
     },
     getOrderDetailByOrderID: (orderID) => {
         return orderDAO.getOrderDetailByOrderID(orderID);
@@ -92,9 +80,6 @@ const orderRepository = {
     getRevenueLastSevenMonths: () => {
         return orderDAO.getRevenueLastSevenMonths();
     },
-    getOrdersForUserByStatusOrderID: (userID, statusOrderID) => {
-        return orderDAO.getOrdersForUserByStatusOrderID(userID, statusOrderID);
-    },
     cancelOrder: (orderId, reasonCancelContent) => {
         return orderDAO.cancelOrder(orderId, reasonCancelContent);
     },
@@ -106,9 +91,6 @@ const orderRepository = {
     },
     updateShippingAddressID: (orderID, shippingAddressID) => {
         return orderDAO.updateShippingAddressID(orderID, shippingAddressID);
-    },
-    getReasonCancleOrderByUserID: async (userID) => {
-        return await orderDAO.findReasonCancleOrderByUserID(userID);
     },
 };
 

@@ -6,8 +6,6 @@ router.get('/getAllVouchers', voucherController.getAllVouchers);
 
 router.post('/addVoucher', voucherController.addVoucher);
 
-router.get('/searchVoucherByDate', voucherController.searchVoucherByDate);
-
 router.put('/updateVoucher/:id', voucherController.updateVoucher);
 
 router.post('/saveVoucherForUser', voucherController.saveVoucherForUser);

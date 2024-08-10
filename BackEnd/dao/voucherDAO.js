@@ -168,31 +168,6 @@ const voucherDAO = {
     });
   },
 
-  searchVoucherByDate: (startDate, expiryDate) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request()
-          .input("startDate", mssql.Date, startDate)
-          .input("expiryDate", mssql.Date, expiryDate);
-
-        const query = `
-                SELECT * FROM Voucher 
-                WHERE expiryDate BETWEEN @startDate AND @expiryDate
-            `;
-
-        request.query(query, (err, res) => {
-          if (err) reject(err);
-
-          const voucher = res.recordset;
-          if (!voucher[0])
-            resolve({
-              err: "Not found the voucher!",
-            });
-          resolve(voucher);
-        });
-      });
-    });
-  },
   updateVoucher: (voucherID, voucherObject) => {
     const voucher = new Voucher(
       voucherID,

@@ -8,11 +8,6 @@ const shippingAddressRepository = {
   getInfoShippingByOrderID: (orderID) => {
     return shippingAddressDAO.findInfoShippingByOrderID(orderID);
   },
-
-  getShippingAddressIsDeleted: () => {
-    return shippingAddressDAO.findShippingAddressIsDeleted();
-  },
-
   updateDeleted: async (shippingAddress_id) => {
     return await shippingAddressDAO.updateIsDeleted(shippingAddress_id);
   },

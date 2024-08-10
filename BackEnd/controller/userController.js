@@ -142,36 +142,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
-  try {
-    const user = req.body;
-    const obj = await userService.updateUser(req.params.user_id, user);
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-const getUserByRole = async (req, res) => {
-  try {
-    const obj = await userService.getUserByRole(req.params.ID);
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-const changePointOfUser = async (req, res) => {
-  try {
-    const { userID, minusPoint } = req.body;
-    const obj = await userService.changePointOfUser(userID, minusPoint);
-    res.send(obj);
-  } catch (error) {
-    console.error("Error in changePointOfUser controller:", error);
-    res.status(500).send("Internal Server Error");
-  }
-};
-
 const getUserByEmail = async (req, res) => {
   try {
     const { Email } = req.body;
@@ -197,11 +167,8 @@ const getUserByPhoneNumber = async (req, res) => {
 module.exports = {
   getAllUsers,
   deleteUser,
-  updateUser,
-  getUserByRole,
   getOne,
   getUserByID,
-  changePointOfUser,
   countUserByRole,
   usePoint,
   updateUserName,

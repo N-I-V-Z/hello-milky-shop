@@ -44,15 +44,6 @@ const userService = {
   deleteUser: async (user_id, status) => {
     return await userRepository.deleteUser(user_id, status);
   },
-  updateUser: async (user_id, user) => {
-    return await userRepository.updateUser(user_id, user);
-  },
-  getUserByRole: async (ID) => {
-    return await userRepository.getUserByRole(ID);
-  },
-  changePointOfUser: async (userID, minusPoint) => {
-    return await userRepository.changePointOfUser(userID, minusPoint);
-  },
 };
 
 module.exports = userService;

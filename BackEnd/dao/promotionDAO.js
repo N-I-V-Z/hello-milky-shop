@@ -124,33 +124,6 @@ const promotionDAO = {
       });
     });
   },
-
-  searchPromotionByName: (promotionName) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const request = new mssql.Request();
-        request.input("promotionName", mssql.VarChar, `%${promotionName}%`);
-
-        const searchQuery = `
-                    SELECT * FROM Promotion WHERE PromotionName LIKE @promotionName
-                `;
-
-        request.query(searchQuery, (err, res) => {
-          if (err) return reject(err);
-          resolve(res.recordset);
-
-          const promotion = res.recordset;
-          if (!promotion[0])
-            resolve({
-              err: "Not found the promotion!",
-            });
-        });
-      });
-    });
-  },
-
   getProductsApplyAnPromotion: (promotionID) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function (err) {

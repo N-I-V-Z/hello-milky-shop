@@ -1,15 +1,5 @@
 const chatService = require("../service/chatService");
 
-const getChatUnseen = async (req, res) => {
-  try {
-    const {ChatRoom} = req.body;
-    const obj = await chatService.getChatUnseen(ChatRoom);
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
 const getAllChatUnseen = async () => {
   try {
     const obj = await chatService.getAllChatUnseen();
@@ -68,6 +58,5 @@ module.exports = {
   getAllChatRoom,
   saveMessage,
   getAllMessageByChatRoom,
-  getChatUnseen,
   getAllChatUnseen,
 };

@@ -37,17 +37,6 @@ const addVoucher = async (req, res) => {
     }
 };
 
-const searchVoucherByDate = async (req, res) => {
-    const { startDate, expiryDate } = req.query;
-    try {
-        const obj = await voucherService.searchVoucherByDate(startDate, expiryDate);
-        res.send(obj);
-    } catch (error) {
-        console.error("Error while search the voucher by date: ", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
 const updateVoucher = async (req, res) => {
     const voucherID = req.params.id;
     const voucherData = req.body;

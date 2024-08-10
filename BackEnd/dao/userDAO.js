@@ -346,27 +346,6 @@ const userDAO = {
       });
     });
   },
-  updateUser: (param_id, userObject) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        var request = new mssql.Request()
-          .input("UserID", param_id)
-          .input("Status", mssql.Bit, userObject.Status)
-          .input("RoleID", mssql.Int, userObject.RoleID);
-
-        request.query(
-          `UPDATE Users SET RoleID = @RoleID  WHERE UserID = @UserID
-          ;`,
-          (err) => {
-            if (err) reject(err);
-            resolve({
-              message: "Edit successfully",
-            });
-          }
-        );
-      });
-    });
-  },
   findUserByRoleID: (ID) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function () {
@@ -502,38 +481,6 @@ const userDAO = {
       });
     });
   },
-  findOrCreate: (email, name) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const checkMail = new mssql.Request().input(
-          "Email",
-          email
-        );
-        checkMail.query(
-          `SELECT UserID FROM Users WHERE Email = @Email;`,
-          (err, res) => {
-            if (err) reject(err);
-            if (res.recordset.length > 0) resolve();
-            else {
-              const request = new mssql.Request()
-                .input("UserID", UserID)
-                .input("UserName", mssql.NVarChar, name)
-                .input("Email", email)
-                .input("Point", mssql.Int, 1000)
-                .input("RoleID", mssql.Int, 3);
-              request.query(
-                `INSERT INTO Users(UserID, UserName, Email, Point, RoleID) values (@UserID, @UserName, @Email, @Point, @RoleID)`,
-                (err) => {
-                  if (err) reject(err);
-                  resolve();
-                }
-              );
-            }
-          }
-        );
-      });
-    });
-  },
   loginEmail: (email) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function () {
@@ -575,28 +522,6 @@ const userDAO = {
               auth: true,
               token: token,
             });
-          }
-        );
-      });
-    });
-  },
-  changePointOfUser: (UserID, MinusPoint) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const request = new mssql.Request()
-          .input("UserID", mssql.VarChar, UserID)
-          .input("MinusPoint", mssql.Int, MinusPoint);
-
-        request.query(
-          `UPDATE Users 
-           SET Point = Point - @MinusPoint 
-           WHERE UserID = @UserID;
-          `,
-          (err, res) => {
-            if (err) reject(err);
-            resolve(res);
           }
         );
       });

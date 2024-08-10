@@ -2,10 +2,6 @@ const productDAO = require("../dao/productDAO");
 
 const productRepository = {
 
-  getAllProductForUser: async() => {
-    return await productDAO.getAllProductForUser();
-  },
-
   getTop5ProductBestSeller: async(Option) => {
     return await productDAO.getTop5ProductBestSeller(Option);
   },
@@ -34,30 +30,13 @@ const productRepository = {
     return await productDAO.getProductByCategory(pc);
   },
 
-  getAllProducts: async () => {
-    return await productDAO.findAllProducts();
-  },
-
   getAllBrands: async () => {
     return await productDAO.getAllBrands();
-  },
-
-  searchWithBrand: async (name, brand) => {
-    return await productDAO.searchWithBrand(name, brand);
-  },
-
-  getAllProductCategory: async () => {
-    return await productDAO.getAllProductCategory();
   },
 
   searchWithProductCategory: async ( pc) => {
     return await productDAO.searchWithProductCategory( pc);
   },
-
-  searchWithPrice: async (name, min, max) => {
-    return await productDAO.searchWithPrice(name, min, max);
-  },
-
   searchWithName: async (name) => {
     return await productDAO.searchWithName(name);
   },
@@ -74,17 +53,8 @@ const productRepository = {
   deleteProduct: async (product_id) => {
     return await productDAO.deleteProduct(product_id);
   },
-  openProduct: async (product_id) => {
-    return await productDAO.openProduct(product_id);
-  },
-  getProductDetailByID: async (product_id) => {
-    return await productDAO.getProductDetailByID(product_id);
-  },
   getProductInfoByID: async (product_id) => {
     return await productDAO.getProductInfoByID(product_id);
-  },
-  get5ProductsLowestFinalPrice: async () => {
-    return await productDAO.get5ProductsLowestFinalPrice();
   },
   getTop6MilksForPregnantMother: async () => {
     return await productDAO.getTop6MilksForPregnantMother();

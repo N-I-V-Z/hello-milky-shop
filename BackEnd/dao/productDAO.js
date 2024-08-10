@@ -205,29 +205,6 @@ const productDAO = {
       });
     });
   },
-  findAllProducts: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT ProductID, ProductName, ProductCategoryName, Status 
-          FROM Product p 
-          JOIN ProductCategory pc ON p.ProductCategoryID = pc.ProductCategoryID
-          WHERE StockQuantity > 0 AND Status =1
-        ;`,
-          (err, res) => {
-            if (err) reject(err);
-            const product = res.recordset;
-            if (!product[0])
-              resolve({
-                err: "Empty",
-              });
-            resolve(product);
-          }
-        );
-      });
-    });
-  },
   getAllBrands: () => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function () {
@@ -246,51 +223,6 @@ const productDAO = {
                 err: "Empty",
               });
             resolve(brand);
-          }
-        );
-      });
-    });
-  },
-  searchWithBrand: (name, brand) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request()
-          .input("Name", mssql.NVarChar, `%${name}%`)
-          .input("BrandName", brand);
-        request.query(
-          `SELECT ProductID, ProductName, ProductCategoryName, Status 
-          FROM Product p 
-          JOIN ProductCategory pc ON p.ProductCategoryID = pc.ProductCategoryID
-          JOIN Brand b ON p.BrandID = b.BrandID
-          WHERE ProductName LIKE @Name AND BrandName = @BrandName`,
-          (err, res) => {
-            if (err) reject(err);
-            const product = res.recordset;
-            if (!product[0])
-              resolve({
-                err: "Not found",
-              });
-            resolve(product);
-          }
-        );
-      });
-    });
-  },
-  getAllProductCategory: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT ProductCategoryName
-          FROM ProductCategory;`,
-          (err, res) => {
-            if (err) reject(err);
-            const category = res.recordset;
-            if (!category[0])
-              resolve({
-                err: "Not found",
-              });
-            resolve(category);
           }
         );
       });
@@ -323,32 +255,6 @@ const productDAO = {
             if (!product[0])
               resolve({
                 err: "Do not have any product with this category",
-              });
-            resolve(product);
-          }
-        );
-      });
-    });
-  },
-  searchWithPrice: (name, min, max) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request()
-          .input("Name", mssql.NVarChar, `%${name}%`)
-          .input("Min", mssql.Int, min)
-          .input("Max", mssql.Int, max);
-        request.query(
-          `SELECT ProductID, ProductName, ProductCategoryName, Status 
-          FROM Product p 
-          JOIN ProductCategory pc ON p.ProductCategoryID = pc.ProductCategoryID
-          JOIN Brand b ON p.BrandID = b.BrandID
-          WHERE ProductName LIKE @Name AND Price >= @Min AND Price <= @Max`,
-          (err, res) => {
-            if (err) reject(err);
-            const product = res.recordset;
-            if (!product[0])
-              resolve({
-                err: "Don't have any product with this price",
               });
             resolve(product);
           }
@@ -413,37 +319,6 @@ const productDAO = {
         THEN od.Quantity
         ELSE 0
     END) DESC`,
-          (err, res) => {
-            if (err) reject(err);
-            const product = res.recordset;
-            if (!product[0])
-              resolve({
-                err: "Not found",
-              });
-            resolve(product);
-          }
-        );
-      });
-    });
-  },
-  getAllProductForUser: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT p.ProductID, ProductName, p.Description, Price, StockQuantity, p.Image, ExpirationDate, ManufacturingDate, BrandName, ProductCategoryName, p.Status, COALESCE(MIN(CASE 
-                      WHEN pm.StartDate <= GETDATE() AND pm.EndDate >= GETDATE() AND pm.Status = 1
-                      THEN ppl.PriceAfterDiscount 
-                      ELSE NULL 
-                   END), p.Price) AS PriceAfterDiscounts
-        FROM Product p 
-        JOIN ProductCategory pc ON p.ProductCategoryID = pc.ProductCategoryID 
-        JOIN Brand b ON p.BrandID = b.BrandID
-        LEFT JOIN ProductPromotionList ppl ON p.ProductID = ppl.ProductID
-        LEFT JOIN Promotion pm ON pm.PromotionID = ppl.PromotionID
-        WHERE p.StockQuantity > 0 AND p.Status =1
-        GROUP BY p.ProductID, p.ProductName, p.Image, p.Price, b.BrandName, p.Description, StockQuantity, ExpirationDate, ManufacturingDate, ProductCategoryName, p.Status
-        `,
           (err, res) => {
             if (err) reject(err);
             const product = res.recordset;
@@ -565,25 +440,6 @@ const productDAO = {
       });
     });
   },
-  openProduct: (param_id) => {
-    return new Promise((resolve, reject) => {
-      const Status = 1;
-      mssql.connect(dbConfig, function () {
-        var request = new mssql.Request()
-          .input("ProductID", param_id)
-          .input("Status", Status);
-        request.query(
-          `UPDATE Product SET Status = @Status WHERE ProductID = @ProductID;`,
-          (err) => {
-            if (err) reject(err);
-            resolve({
-              message: "Deleted",
-            });
-          }
-        );
-      });
-    });
-  },
   getProductInfoByID: (product_id) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function () {
@@ -615,45 +471,6 @@ const productDAO = {
     });
   },
 
-  get5ProductsLowestFinalPrice: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT TOP 5 p.ProductID, p.ProductName, p.Price,
-        COALESCE(MIN(CASE 
-                      WHEN pm.StartDate <= GETDATE() AND pm.EndDate >= GETDATE() AND pm.Status = 1
-                      THEN ppl.PriceAfterDiscount 
-                      ELSE NULL 
-                   END), p.Price) AS PriceAfterDiscounts
-    FROM Product p
-        LEFT JOIN ProductPromotionList ppl ON p.ProductID = ppl.ProductID
-        LEFT JOIN Promotion pm ON pm.PromotionID = ppl.PromotionID
-        JOIN Brand b ON p.BrandID = b.BrandID
-        JOIN ProductCategory pc ON p.ProductCategoryID = pc.ProductCategoryID
-		GROUP BY p.ProductID, p.ProductName, p.Price
-    ORDER BY
-        PriceAfterDiscounts ASC;
-      ;`,
-          (err, res) => {
-            if (err) {
-              reject(err);
-              return;
-            }
-
-            if (!res || !res.recordset || res.recordset.length === 0) {
-              resolve({
-                err: "Not found",
-              });
-              return;
-            }
-
-            resolve(res.recordset);
-          }
-        );
-      });
-    });
-  },
 
   getTop6MilksForPregnantMother: () => {
     return new Promise((resolve, reject) => {

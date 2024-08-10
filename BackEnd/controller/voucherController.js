@@ -107,7 +107,6 @@ const openVoucher = async (req, res) => {
 module.exports = {
     getAllVouchers,
     addVoucher,
-    searchVoucherByDate,
     updateVoucher,
     saveVoucherForUser,
     getVouchersByUserID,

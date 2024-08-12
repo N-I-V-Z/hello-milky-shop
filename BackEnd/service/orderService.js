@@ -59,19 +59,6 @@ const orderService = {
         return await orderRepository.getOpenOrderForUser(id);
     },
 
-    getAllOrders: async () => {
-        return await orderRepository.getAllOrders();
-    },
-
-    searchOrderByUserName: async (userName) => {
-        try {
-            const orders = await orderRepository.searchOrderByUserName(userName);
-            return orders;
-        } catch (error) {
-            throw new Error(`Error searching orders by user name: ${error.message}`);
-        }
-    },
-
     createOrder: async (userID) => {
         try {
             const orderID = await orderRepository.createOrder(userID);
@@ -116,21 +103,6 @@ const orderService = {
         }
     },
 
-    getApplicableVouchers: async (userID, orderID) => {
-        try {
-            const order = await orderRepository.getOrder(orderID);
-            if (!order || order.length === 0) {
-                throw new Error('Order not found');
-            }
-            const orderTotal = order.reduce((total, item) => total + item.Price * item.Quantity, 0);
-            const currentDate = new Date();
-            const vouchers = await orderRepository.getApplicableVouchers(userID, orderTotal, currentDate);
-            return vouchers;
-        } catch (error) {
-            throw new Error(`Error getting applicable vouchers: ${error.message}`);
-        }
-    },
-
     applyVoucherToOrder: async (orderID, voucherID) => {
         try {
             await orderRepository.applyVoucherToOrder(orderID, voucherID);
@@ -145,15 +117,6 @@ const orderService = {
             return orders;
         } catch (error) {
             throw new Error(`Error getting orders for user: ${error.message}`);
-        }
-    },
-
-    getPreviousOrderAddress: async (userID) => {
-        try {
-            const order = await orderRepository.getPreviousOrderAddress(userID);
-            return order;
-        } catch (error) {
-            throw new Error(`Error getting the previous order address: ${error.message}`);
         }
     },
     getOrderDetailByOrderID: async (orderID) => {
@@ -207,14 +170,6 @@ const orderService = {
         return await orderRepository.getRevenueLastSevenMonths();
     },
 
-    getOrdersForUserByStatusOrderID: async (userID, statusOrderID) => {
-        try {
-            const orders = await orderRepository.getOrdersForUserByStatusOrderID(userID, statusOrderID);
-            return orders;
-        } catch (error) {
-            throw new Error(`Error getting the order for user: ${error.message}`);
-        }
-    },
     cancelOrder: async (orderId, reasonCancelContent) => {
         try {
             const order = await orderRepository.getOrderByID(orderId);
@@ -246,15 +201,6 @@ const orderService = {
             return orders;
         } catch (error) {
             throw new Error(`Error update the shipping address ID of an order: ${error.message}`);
-        }
-    },
-
-    getReasonCancleOrderByUserID: async (userID) => {
-        try {
-            const orders = await orderRepository.getReasonCancleOrderByUserID(userID);
-            return orders;
-        } catch (error) {
-            throw new Error(`Error getting the reason: ${error.message}`);
         }
     },
 }

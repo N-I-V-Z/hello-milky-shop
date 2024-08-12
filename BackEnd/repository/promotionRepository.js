@@ -16,9 +16,6 @@ const promotionRepository = {
         return await promotionDAO.updatePromotion(promotionID, promotionObject);
     },
 
-    searchPromotionByName: async (promotionName) => {
-        return await promotionDAO.searchPromotionByName(promotionName);
-    },
     getProductsApplyAnPromotion: async (promotionID) => {
         return await promotionDAO.getProductsApplyAnPromotion(promotionID);
     },

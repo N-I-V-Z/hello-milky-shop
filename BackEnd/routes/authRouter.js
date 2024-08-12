@@ -7,10 +7,6 @@ router.post("/login", authController.login);
 
 router.post("/register", authController.register);
 
-router.post("/logout", authController.logout);
-
-router.post("/google-login", authController.loginGoogle);
-
 router.post('/loginEmail', authController.loginEmail);
 
 router.post("/checkPhoneNumber", authController.checkPhoneNumber);

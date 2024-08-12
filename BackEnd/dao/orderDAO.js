@@ -186,49 +186,6 @@ const orderDAO = {
       });
     });
   },
-
-  getAllOrders: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT * FROM Orders 
-          WHERE ORDERS.STATUS=1;`,
-          (err, res) => {
-            if (err) reject(err);
-
-            resolve(res.recordset);
-          }
-        );
-      });
-    });
-  },
-  searchOrderByUserName: (userName) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const trimmedUserName = userName.trim().replace(/\s+/g, " ");
-
-        const request = new mssql.Request();
-
-        request.input("userName", mssql.VarChar, `%${trimmedUserName}%`);
-
-        const selectQuery = `
-                SELECT o.*
-                FROM Orders o
-                JOIN Users u ON o.UserID = u.UserID
-                WHERE u.UserName COLLATE SQL_Latin1_General_CP1_CI_AS LIKE @userName
-                `;
-
-        request.query(selectQuery, (err, result) => {
-          if (err) return reject(err);
-          resolve(result.recordset);
-        });
-      });
-    });
-  },
-
   createOrder: (userID) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function (err) {
@@ -381,37 +338,6 @@ const orderDAO = {
       });
     });
   },
-
-  getApplicableVouchers: (userID, orderTotal, currentDate) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const request = new mssql.Request();
-        request
-          .input("userID", mssql.VarChar, userID)
-          .input("orderTotal", mssql.Float, orderTotal)
-          .input("currentDate", mssql.DateTime, currentDate);
-
-        const selectQuery = `
-                    SELECT v.*
-                    FROM Voucher v
-                    JOIN UserVoucher uv ON v.VoucherID = uv.VoucherID
-                    WHERE uv.UserID = @userID
-                    AND v.MinDiscount <= @orderTotal
-                    AND v.MaxDiscount >= @orderTotal
-                    AND v.Status = 1
-                    AND v.StartDate <= @currentDate
-                    AND v.ExpiryDate >= @currentDate
-                `;
-
-        request.query(selectQuery, (err, result) => {
-          if (err) return reject(err);
-          resolve(result.recordset);
-        });
-      });
-    });
-  },
   // Áp dụng voucher vào đơn hàng
   applyVoucherToOrder: (orderID, voucherID) => {
     return new Promise((resolve, reject) => {
@@ -431,31 +357,6 @@ const orderDAO = {
         request.query(insertQuery, (err, result) => {
           if (err) return reject(err);
           resolve(result);
-        });
-      });
-    });
-  },
-
-  getPreviousOrderAddress: (userID) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const request = new mssql.Request();
-        request.input("userID", mssql.VarChar, userID);
-
-        const selectQuery = `
-                    SELECT TOP 1 Address
-                    FROM Orders
-                    WHERE UserID = @userID
-                    ORDER BY OrderID DESC
-                `;
-
-        request.query(selectQuery, (err, result) => {
-          if (err) return reject(err);
-          resolve(
-            result.recordset.length > 0 ? result.recordset[0].Address : null
-          );
         });
       });
     });
@@ -897,7 +798,7 @@ const orderDAO = {
             SELECT 
               DATEADD(MONTH, -1, MonthStart)
             FROM MonthList
-            WHERE MonthStart > DATEADD(MONTH, -7, DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1))
+            WHERE MonthStart > DATEADD(MONTH, -5, DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1))
           )
           SELECT 
             FORMAT(MonthStart, 'yyyy-MM') AS Month, 
@@ -923,35 +824,6 @@ const orderDAO = {
       });
     });
   },
-
-  getOrdersForUserByStatusOrderID: (userID, statusOrderID) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const request = new mssql.Request();
-        request
-          .input("userID", mssql.VarChar, userID)
-          .input("statusOrderID", mssql.Int, statusOrderID);
-
-        const selectQuery = `
-                  SELECT o.OrderID, p.ProductID, p.ProductName, pc.ProductCategoryName, od.Quantity, p.Price, p.Image, od.Price, o.ReasonCancelContent
-                  FROM Orders o
-                  JOIN StatusOrder s ON o.StatusOrderID = s.StatusOrderID
-                  LEFT JOIN OrderDetail od ON o.OrderID = od.OrderID
-                  LEFT JOIN Product p ON od.ProductID = p.ProductID
-                  LEFT JOIN ProductCategory pc ON p.ProductCategoryID = pc.ProductCategoryID
-                  WHERE o.Status = 1 AND o.StatusOrderID = @statusOrderID AND UserID =  @userID
-                `;
-
-        request.query(selectQuery, (err, result) => {
-          if (err) return reject(err);
-          resolve(result.recordset);
-        });
-      });
-    });
-  },
-
   cancelOrder: (orderID, reasonCancelContent) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function (err) {
@@ -1012,29 +884,6 @@ const orderDAO = {
               UPDATE Orders
               SET Orders.TotalAmount = @totalAmount
               WHERE OrderID = @orderID
-                `;
-
-        request.query(selectQuery, (err, result) => {
-          if (err) return reject(err);
-          resolve(result.recordset);
-        });
-      });
-    });
-  },
-
-  findReasonCancleOrderByUserID: (userID) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function (err) {
-        if (err) return reject(err);
-
-        const request = new mssql.Request();
-        request.input("userID", mssql.VarChar, userID);
-
-        const selectQuery = `
-                 SELECT OrderID, ReasonCancelContent
-                 FROM Orders o
-                 JOIN StatusOrder so ON o.StatusOrderID = so.StatusOrderID
-                 WHERE UserID = @userID AND so.StatusOrderID =3
                 `;
 
         request.query(selectQuery, (err, result) => {

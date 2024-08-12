@@ -1,14 +1,5 @@
 const productService = require("../service/productService");
 
-const getAllProductForUser = async (req, res) => {
-  try {
-    const obj = await productService.getAllProductForUser();
-    res.status(200).json(obj)
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-}
-
 const getTop5ProductBestSeller = async (req, res) => {
   try {
     const { Option } = req.body;
@@ -64,30 +55,9 @@ const getProductByCategory = async (req, res) => {
   }
 };
 
-const getAllProducts = async (req, res) => {
-  try {
-    const obj = await productService.getAllProducts();
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
 const getAllBrands = async (req, res) => {
   try {
     const obj = await productService.getAllBrands();
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-const searchWithBrand = async (req, res) => {
-  try {
-    const obj = await productService.searchWithBrand(
-      req.params.name,
-      req.params.brand
-    );
     res.send(obj);
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -105,19 +75,6 @@ const searchWithProductCategory = async (req, res) => {
   }
 };
 
-const searchWithPrice = async (req, res) => {
-  try {
-    const obj = await productService.searchWithPrice(
-      req.params.name,
-      req.params.min_price,
-      req.params.max_price
-    );
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
 const searchWithName = async (req, res) => {
   try {
     const name = req.query.search; // Lấy giá trị từ query parameter 'timkiem'
@@ -126,15 +83,6 @@ const searchWithName = async (req, res) => {
     return res.status(400).json({ error: 'Query không hợp lệ' });
   }
     const obj = await productService.searchWithName(name);
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-const getAllProductCategory = async (req, res) => {
-  try {
-    const obj = await productService.getAllProductCategory();
     res.send(obj);
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -217,25 +165,6 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-const openProduct = async (req, res) => {
-  try {
-    const obj = await productService.openProduct(req.params.product_id);
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-const getProductDetailByID = async (req, res) => {
-  try {
-    const obj = await productService.getProductDetailByID(
-      req.params.product_id
-    );
-    res.send(obj);
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
-};
 
 const getAllBrandByCategory = async (req, res) => {
   try {
@@ -255,15 +184,7 @@ const getProductInfoByID = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
-const get5ProductsLowestFinalPrice = async (req, res) => {
-  try {
-    const obj = await productService.get5ProductsLowestFinalPrice();
-    res.send(obj);
-  } catch (error) {
-    console.error("Error while getting all users:", error);
-    res.status(500).send("Internal Server Error");
-  }
-};
+
   const getTop6MilksForPregnantMother = async (req, res) => {
     try {
       const obj = await productService.getTop6MilksForPregnantMother();
@@ -292,22 +213,16 @@ const getTop5ProductBestSellerForUser = async (req, res) => {
 }
 
 module.exports = {
-  getAllProducts,
   getInfoProductsDetail,
   updateProduct,
   createProduct,
   deleteProduct,
   getAllBrands,
-  getAllProductCategory,
-  searchWithBrand,
   searchWithProductCategory,
-  searchWithPrice,
   searchWithName,
-  getProductDetailByID,
   getProductByCategory,
   getAllBrandByCategory,
   getProductInfoByID,
-  get5ProductsLowestFinalPrice,
   getTop6MilksForPregnantMother,
   getTop6MilkForBaby,
   getProductInforID,
@@ -315,7 +230,5 @@ module.exports = {
   countProduct,
   countBrand,
   getTop5ProductBestSeller,
-  getAllProductForUser,
   getTop5ProductBestSellerForUser,
-  openProduct,
 };

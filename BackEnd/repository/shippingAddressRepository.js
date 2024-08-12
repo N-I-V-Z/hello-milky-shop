@@ -1,5 +1,4 @@
 const shippingAddressDAO = require("../dao/shippingAddressDAO");
-const { updateShippingAddress } = require("../service/shippingAddressService");
 
 const shippingAddressRepository = {
   getInfoShippingByUserID: async (ID) => {
@@ -9,11 +8,6 @@ const shippingAddressRepository = {
   getInfoShippingByOrderID: (orderID) => {
     return shippingAddressDAO.findInfoShippingByOrderID(orderID);
   },
-
-  getShippingAddressIsDeleted: () => {
-    return shippingAddressDAO.findShippingAddressIsDeleted();
-  },
-
   updateDeleted: async (shippingAddress_id) => {
     return await shippingAddressDAO.updateIsDeleted(shippingAddress_id);
   },

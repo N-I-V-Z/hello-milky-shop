@@ -1,9 +1,6 @@
 const productRepository = require("../repository/productRepository");
 
 const productService = {
-  getAllProductForUser: async () => {
-    return await productRepository.getAllProductForUser();
-  },
 
   getTop5ProductBestSeller: async (Option) => {
     return await productRepository.getTop5ProductBestSeller(Option);
@@ -32,25 +29,14 @@ const productService = {
   getProductByCategory: async (pc) => {
     return await productRepository.getProductByCategory(pc);
   },
-
-  getAllProducts: async () => {
-    return await productRepository.getAllProducts();
-  },
   getAllBrands: async () => {
     return await productRepository.getAllBrands();
   },
-  searchWithBrand: async (name, brand) => {
-    return await productRepository.searchWithBrand(name, brand);
-  },
-  getAllProductCategory: async () => {
-    return await productRepository.getAllProductCategory();
-  },
+
   searchWithProductCategory: async ( pc) => {
     return await productRepository.searchWithProductCategory( pc);
   },
-  searchWithPrice: async (name, min, max) => {
-    return await productRepository.searchWithPrice(name, min, max);
-  },
+
   searchWithName: async (name) => {
     return await productRepository.searchWithName(name);
   },
@@ -66,17 +52,8 @@ const productService = {
   deleteProduct: async (product_id) => {
     return await productRepository.deleteProduct(product_id);
   },
-  openProduct: async (product_id) => {
-    return await productRepository.openProduct(product_id);
-  },
-  getProductDetailByID: async (product_id) => {
-    return await productRepository.getProductDetailByID(product_id);
-  },
   getProductInfoByID : async (product_id) => {
     return await productRepository.getProductInfoByID(product_id);
-  },
-  get5ProductsLowestFinalPrice : async () => {
-    return await productRepository.get5ProductsLowestFinalPrice();
   },
   getTop6MilksForPregnantMother : async () => {
     return await productRepository.getTop6MilksForPregnantMother();

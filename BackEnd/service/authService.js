@@ -6,11 +6,6 @@ const changePassword = async (Password, UserID) => {
   return user;
 };
 
-const findOrCreate = async (email, name) => {
-  const user = await authRepository.findOrCreate(email, name);
-  return user;
-};
-
 const checkOldPassword = async (OldPass, UserID) => {
   const user = await authRepository.checkOldPassword(OldPass, UserID);
   return user;
@@ -69,5 +64,4 @@ module.exports = {
   forgetPassword,
   checkOldPassword,
   changePassword,
-  findOrCreate,
 };

@@ -1,9 +1,6 @@
 const chatDAO = require("../dao/chatDAO");
 
 const chatRepository = {
-  getChatUnseen: async (ChatRoom) => {
-    return chatDAO.getChatUnseen(ChatRoom);
-  },
   getAllChatUnseen: async () => {
     return chatDAO.getAllChatUnseen();
   },

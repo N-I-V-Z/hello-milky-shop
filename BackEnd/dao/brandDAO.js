@@ -1,8 +1,5 @@
 const mssql = require("mssql");
 const dbConfig = require("../config/db.config");
-const Brand = require("../bo/brand");
-const { resolve } = require("path");
-const { rejects } = require("assert");
 
 const brandDAO = {
     getAll: () => {
@@ -50,4 +47,3 @@ const brandDAO = {
 };
 
 module.exports = brandDAO;
-

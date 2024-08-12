@@ -17,30 +17,9 @@ const getTop5ArticleSameType = async (req, res) => {
     }
 };
 
-const getArticlesByID = async (req, res) => {
-    try {
-        const obj = await articleService.getArticlesByID(req.params.ID);
-        res.send(obj);
-    } catch (error) {
-        console.error("Error while getting all users:", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
-
 const getArticlesByArticleID = async (req, res) => {
     try {
         const obj = await articleService.getArticlesByArticleID(req.params.ID);
-        res.send(obj);
-    } catch (error) {
-        console.error("Error while getting all users:", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
-const getArticlesByContent = async (req, res) => {
-    try {
-        const obj = await articleService.getArticlesByContent(req.params.Content);
         res.send(obj);
     } catch (error) {
         console.error("Error while getting all users:", error);
@@ -67,17 +46,6 @@ const getAllArticlesforViewer = async (rep, res) => {
         res.status(500).send("Internal Server Error");
     }
 };
-
-const getAllArticleCategory = async (req, res) => {
-    try {
-        const obj = await articleService.getAllArticleCategory();
-        res.send(obj);
-    } catch (error) {
-        console.error("Error while getting all server:", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
 const createArticle = async (req, res) => {
     try {
         const obj = await articleService.createArticle(req.body);
@@ -108,15 +76,6 @@ const updateArticle = async (req, res) => {
     }
 };
 
-const getAuthorName = async (req, res) => {
-    try {
-        const obj = await articleService.getAuthorName();
-        res.send(obj);
-    } catch (error) {
-        console.error("Error while getting all users:", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
 
 const getCurrentCategoriesInArticles = async (req, res) => {
     try {
@@ -139,16 +98,12 @@ const getTop4ArticlesforViewer = async (rep, res) => {
 };
 
 module.exports = {
-    getArticlesByID,
-    getArticlesByContent,
     getAllArticles,
     getAllArticlesforViewer,
-    getAllArticleCategory,
     createArticle,
     deleteArticle,
     updateArticle,
     getArticlesByArticleID,
-    getAuthorName,
     getTop5ArticleSameType,
     getCurrentCategoriesInArticles,
     getTop4ArticlesforViewer

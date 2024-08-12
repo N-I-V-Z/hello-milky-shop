@@ -83,23 +83,6 @@ const removeProductFromOrder = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-const getAllOrders = async (req, res) => {
-    orderService.getAllOrders()
-        .then(result => res.status(201).json(result))
-        .catch(err => res.status(500).json({ message: err.message })
-        );
-}
-
-const searchOrderByUserName = async (req, res) => {
-    try {
-        const userName = req.params.userName;
-        const orders = await orderService.searchOrderByUserName(userName);
-        res.status(200).json(orders);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
 
 const createOrder = async (req, res) => {
     try {
@@ -142,17 +125,6 @@ const checkoutOrder = async (req, res) => {
     }
 };
 
-const getApplicableVouchers = async (req, res) => {
-    try {
-        const { userID, orderID } = req.params;
-        const vouchers = await orderService.getApplicableVouchers(userID, orderID);
-        res.status(200).json(vouchers);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-
 const applyVoucherToOrder = async (req, res) => {
     try {
         const { orderID, voucherID } = req.body;
@@ -171,16 +143,6 @@ const getOrdersByUserID = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-const getPreviousOrderAddress = async (req, res) => {
-    try {
-        const userID = req.params.userID;
-        const address = await orderService.getPreviousOrderAddress(userID);
-        res.status(200).json({ address });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
 const getOrderDetailByOrderID = async (req, res) => {
     try {
         const orderID = req.params.orderID;
@@ -249,16 +211,6 @@ const getRevenueLastSevenMonths = async (req, res) => {
     }
 };
 
-const getOrdersForUserByStatusOrderID = async (req, res) => {
-    try {
-        const { userID, statusOrderID } = req.params;
-        const orders = await orderService.getOrdersForUserByStatusOrderID(userID, statusOrderID);
-        res.status(200).json({ orders });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
 const cancelOrder = async (req, res) => {
     try {
         const { orderID, reasonCancelContent } = req.body;
@@ -292,28 +244,13 @@ const updateShippingAddressID = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-const getReasonCancleOrderByUserID = async (req, res) => {
-    try {
-        const obj = await orderService.getReasonCancleOrderByUserID(req.params.userID);
-        res.send(obj);
-    } catch (error) {
-        console.error("Error while getting all users:", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-
 module.exports = {
-    getAllOrders,
     createOrder,
     addProductToOrder,
     getOrder,
     checkoutOrder,
     getOrdersByUserID,
-    getApplicableVouchers,
     applyVoucherToOrder,
-    getPreviousOrderAddress,
-    searchOrderByUserName,
     getOrderDetailByOrderID,
     changeQuantityOfProductInOrder,
     updateStatusOrderID,
@@ -326,11 +263,9 @@ module.exports = {
     getTodayRevenue,
     getRevenueLastSevenMonths,
     countOrdersByStatusOrderID,
-    getOrdersForUserByStatusOrderID,
     cancelOrder,
     updateTotalAmountOfOrder,
     updateShippingAddressID,
-    getReasonCancleOrderByUserID,
     getInfoToShip,
     countOrdersPayed,
     transferOrderDetailsToNewOrder,

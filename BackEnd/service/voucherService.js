@@ -1,4 +1,3 @@
-const { openVoucher } = require("../controller/voucherController");
 const voucherRepository = require("../repository/voucherRepository");
 
 const voucherService = {
@@ -20,14 +19,6 @@ const voucherService = {
       throw new Error('Start date cannot be later than expiry date');
     }
     return voucherRepository.addVoucher(voucherObject);
-  },
-
-  searchVoucherByDate: (startDate, expiryDate) => {
-    // Validate date range
-    if (new Date(startDate) > new Date(expiryDate)) {
-      throw new Error('Start date cannot be later than expiry date');
-    }
-    return voucherRepository.searchVoucherByDate(startDate, expiryDate);
   },
 
   updateVoucher: (voucherID, voucherObject) => {

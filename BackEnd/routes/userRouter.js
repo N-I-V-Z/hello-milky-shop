@@ -6,15 +6,9 @@ router.get("/getAllUsers", userController.getAllUsers);
 
 router.put("/disableUser/:user_id", userController.deleteUser);
 
-router.put("/editUser/:user_id", userController.updateUser);
-
-router.get("/getUserByRoleID/:ID", userController.getUserByRole);
-
 router.post("/getOne", verifyToken, userController.getOne);
 
 router.get("/getUserByID", userController.getUserByID);
-
-router.post("/changePointOfUser", userController.changePointOfUser);
 
 router.get("/countUserByRole/:role", userController.countUserByRole);
 

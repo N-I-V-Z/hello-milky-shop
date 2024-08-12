@@ -3,33 +3,6 @@ const dbConfig = require("../config/db.config");
 const Comment = require("../bo/comment");
 
 const commentDAO = {
-
-  getCommentByID: (CommentID) => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request().input(
-          "CommentID",
-          mssql.Int,
-          CommentID
-        );
-        request.query(
-          `SELECT CommentID, Description, Rating, CommentDate, Rep, RepDate, ProductID, u.UserName, s.UserName as StaffName
-          FROM Comment c
-          JOIN Users u ON u.UserID = c.UserID
-          LEFT JOIN Users s ON s.UserID = c.StaffID
-          WHERE CommentID = @CommentID;`,
-          (err, res) => {
-            if (err) reject(err);
-
-            resolve({
-              err: res?.recordset[0] ? 0 : 1,
-              data: res.recordset[0] ?? []
-            });
-          }
-        );
-      });
-    });
-  },
   countRatingAndAvgRating: (ProductID) => {
     return new Promise((resolve, reject) => {
       mssql.connect(dbConfig, function () {
@@ -127,29 +100,6 @@ const commentDAO = {
               err: res?.recordset[0] === null ? 1 : 0,
               count: res?.recordset[0].count,
             });
-          }
-        );
-      });
-    });
-  },
-
-  getAllComments: () => {
-    return new Promise((resolve, reject) => {
-      mssql.connect(dbConfig, function () {
-        const request = new mssql.Request();
-        request.query(
-          `SELECT CommentID, c.Description, Rating, CommentDate, Rep, RepDate, c.ProductID, u.UserName, s.UserName as StaffName
-          FROM Comment c
-          JOIN Users u ON u.UserID = c.UserID
-          LEFT JOIN Users s ON s.UserID = c.StaffID
-          JOIN Product p ON p.ProductID = c.ProductID;`,
-          (err, res) => {
-            if (err) reject(err);
-            if (!res.recordset[0])
-              resolve({
-                err: "Empty",
-              });
-            resolve(res.recordset);
           }
         );
       });

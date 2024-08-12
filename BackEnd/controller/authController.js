@@ -20,29 +20,6 @@ const changePassword = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
-
-const loginGoogle = async (req, res) => {
-  try {
-    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-    const { token } = req.body;
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-
-    await authService.findOrCreate(payload.email, payload.name);
-
-    res.json({ email: payload.email });
-  } catch (error) {
-    console.error("Login Failed:", error);
-    res.status(500).json({
-      success: false,
-      message: "Đã xảy ra lỗi khi đăng nhập với Google.",
-    });
-  }
-};
-
 const forgetPassword = async (req, res) => {
   try {
     const { Password, UserID } = req.body;
@@ -109,17 +86,6 @@ const register = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error while logging out:", err);
-      res.status(500).send("Internal Server Error");
-    } else {
-      res.redirect("/");
-    }
-  });
-};
-
 const loginEmail = async (req, res) => {
   const { email } = req.body;
   try {
@@ -152,10 +118,8 @@ module.exports = {
   checkLoggedOut,
   login,
   register,
-  logout,
   loginEmail,
   checkPhoneNumber,
   forgetPassword,
   changePassword,
-  loginGoogle,
 };

@@ -17,13 +17,10 @@ const promotionService = {
         return await promotionRepository.updatePromotion(promotionID, promotionObject);
     },
 
-    searchPromotionByName: async (promotionName) => {
-        return await promotionRepository.searchPromotionByName(promotionName);
-    },
     getProductsApplyAnPromotion: async (promotionID) => {
         return await promotionRepository.getProductsApplyAnPromotion(promotionID);
     },
-    applyPromotionToProducts: async (productIDs, promotionID) => {
+        applyPromotionToProducts: async (productIDs, promotionID) => {
         try {
             await promotionRepository.deleteProductPromotionsByPromotionID(promotionID);
             await promotionRepository.insertProductPromotions(productIDs, promotionID);

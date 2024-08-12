@@ -10,9 +10,6 @@ const voucherRepository = {
     addVoucher: async (voucher) => {
         return await voucherDAO.addVoucher(voucher);
     },
-    searchVoucherByDate: async (startDate, expiryDate) => {
-        return await voucherDAO.searchVoucherByDate(startDate, expiryDate);
-    },
     updateVoucher: async (voucherID, voucherObject) => {
         return await voucherDAO.updateVoucher(voucherID, voucherObject);
     },

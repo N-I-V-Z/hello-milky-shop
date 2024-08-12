@@ -42,7 +42,7 @@ If you would like to contribute, feel free to fork the repository and submit a p
 1. **Run the back-end** (Node.js):
 
    ```bash
-   Server will start at http://localhost:50005000
+   Server will start at http://localhost:5000
    ```
 
 2. **Run the front-end** (ReactJS):
